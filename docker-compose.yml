@@ -5,6 +5,7 @@ volumes:
   qdrant_storage:
   open-webui:
   flowise:
+  pgadmin_data:
 
 networks:
   demo:
@@ -90,6 +91,19 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+      
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_Container
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin123
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+    networks: ['demo']
 
   n8n-import:
     <<: *service-n8n
